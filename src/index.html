@@ -6,7 +6,15 @@
     <title></title>
 	<style>
 		ul.mui-table-view{
-			margin-top:300px;
+			margin-top:100px;
+		}
+		img.img{
+			width:100%;
+			height:100px;
+		}
+		img.mui-media-object{
+			width:50%;
+			height:200px;
 		}
 	</style>
     <script src="js/mui.min.js"></script>
@@ -19,27 +27,21 @@
 <body>
 	var baseUrl="http://localhost:3000/images/";
 	<header class="mui-bar mui-bar-nav">
-		<img src='http://localhost:3000/images/1.jpg'>
+		<img src='http://localhost:3000/images/1.jpg' class="img">
 	</header>
 	<div class="mui-content" style="background-color:#fff">
 		<div class="mui-scroll-wrapper" id="pullrefresh">
 			<div class="mui-scroll">
-			<ul class="mui-table-view mui-grid-view">
-			<li class="mui-table-view-cell mui-media mui-col-xs-6">
+			<ul class="mui-table-view mui-grid-view" id="list">
+		     <li class="mui-table-view-cell mui-media mui-col-xs-6">
 				<a href="#">
 					<img class="mui-media-object" src="http://localhost:3000/images/2.jpg">
-					<div class="mui-media-body">幸福就是可以一起睡觉</div></a></li>
+					<div class="mui-media-body">幸福就是可以一起睡觉</div></a></li> 
 			<li class="mui-table-view-cell mui-media mui-col-xs-6">
-				<a href="#">
-					<img class="mui-media-object"  src="http://localhost:3000/images/3.jpg">
-					<div class="mui-media-body">想要一间这样的木屋，静静的喝咖啡</div></a></li>
-			<li class="mui-table-view-cell mui-media mui-col-xs-6">
-				<a href="#"><img class="mui-media-object"  src="http://localhost:3000/images/4.jpg">
-					<div class="mui-media-body">Color of SIP CBD</div></a></li>
-			<li class="mui-table-view-cell mui-media mui-col-xs-6">
-				<a href="#">
-					<img class="mui-media-object"  src="http://localhost:3000/images/5.jpg">
-					<div class="mui-media-body">静静看这世界</div></a></li>
+			<a href="#">
+				<img class="mui-media-object" src="http://localhost:3000/images/3.jpg">
+				<div class="mui-media-body">幸福就是可以一起睡觉</div></a></li> 		
+			
 		   </ul>   
 			</div>
 		</div>
@@ -78,9 +80,29 @@
 				},
 				dateType:'json',
 				success:function(res){
-					console.log(res);
+					if(res.code==1000){
+						console.log(res.data);
+
+						render(res.data)
+					}
+					
 				}
 			})
+		}
+		function render(data){
+			console.log(data);
+			var str="";
+			var base='http://localhost:3000/images/';
+			data.forEach((item)=>{
+				str+=`<li class="mui-table-view-cell mui-media mui-col-xs-6">
+					<a href="#">
+						<img class="mui-media-object" src="${base}${item.url}">
+						<div class="mui-media-body">${item.names}</div>
+					</a>
+				</li>`
+			})
+			var list=document.getElementById("list");
+			list.innerHTML+=str;
 		}
 		
 		
