@@ -4,7 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title></title>
+	<style>
+		ul.mui-table-view{
+			margin-top:300px;
+		}
+	</style>
     <script src="js/mui.min.js"></script>
+	
     <link href="css/mui.min.css" rel="stylesheet"/>
     <script type="text/javascript" charset="utf-8">
       	mui.init();
@@ -13,12 +19,12 @@
 <body>
 	var baseUrl="http://localhost:3000/images/";
 	<header class="mui-bar mui-bar-nav">
-		
 		<img src='http://localhost:3000/images/1.jpg'>
 	</header>
 	<div class="mui-content" style="background-color:#fff">
-		<h5 style="background-color:#efeff4">慢生活</h5>
-		<ul class="mui-table-view mui-grid-view">
+		<div class="mui-scroll-wrapper" id="pullrefresh">
+			<div class="mui-scroll">
+			<ul class="mui-table-view mui-grid-view">
 			<li class="mui-table-view-cell mui-media mui-col-xs-6">
 				<a href="#">
 					<img class="mui-media-object" src="http://localhost:3000/images/2.jpg">
@@ -34,7 +40,51 @@
 				<a href="#">
 					<img class="mui-media-object"  src="http://localhost:3000/images/5.jpg">
 					<div class="mui-media-body">静静看这世界</div></a></li>
-		</ul>    
+		   </ul>   
+			</div>
+		</div>
+		
+		
+		
 	</div>
+	<script>
+		var page=0,
+		pagesize=2,
+		status=false,
+		total;
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				
+				up: {
+					auto:true,
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		function pullupRefresh() {
+						setTimeout(function() {
+							getList();
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh(status); //参数为true代表没有更多数据了。
+						
+						}, 1500);
+		}
+		function getList(){
+			mui.ajax('/api/get/list',{
+				data:{
+					page:page,
+					pagesize:pagesize
+				},
+				dateType:'json',
+				success:function(res){
+					console.log(res);
+				}
+			})
+		}
+		
+		
+		
+	</script>
 </body>
 </html>
